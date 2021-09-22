@@ -18,12 +18,12 @@ fi
 if [ -z "${ACCESS_KEY_ID}" ]; then
     ACCESS_KEY_ID=
 else
-    ACCESS_KEY_ID=$(eval echo $ACCESS_KEY_ID)
+    ACCESS_KEY_ID=$(eval echo $(eval echo $ACCESS_KEY_ID))
 fi
 if [ -z "${SECRET_ACCESS_KEY}" ]; then
     SECRET_ACCESS_KEY=
 else
-    SECRET_ACCESS_KEY=$(eval echo $SECRET_ACCESS_KEY)
+    SECRET_ACCESS_KEY=$(eval echo $(eval echo $SECRET_ACCESS_KEY))
 fi
 if [ -z "${DEFAULT_REGION}" ]; then
     DEFAULT_REGION=us-west-2

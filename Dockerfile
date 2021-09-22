@@ -10,7 +10,7 @@ FROM kartoza/postgis:$POSTGRES_MAJOR_VERSION-$POSTGIS_MAJOR_VERSION.${POSTGIS_MI
 RUN apt-get -y update; apt-get -y --no-install-recommends install  cron python3-pip vim  gettext \
     && apt-get -y --purge autoremove && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-RUN pip3 install s3cmd
+RUN pip3 install https://github.com/s3tools/s3cmd/archive/ee4b303d814d35230ee51d5b04ef51d302d35506.zip
 RUN touch /var/log/cron.log
 
 ENV \

@@ -28,7 +28,7 @@ echo "Backup running to $MYBACKUPDIR" >>/var/log/cron.log
 if [[ ${STORAGE_BACKEND} =~ [Ff][Ii][Ll][Ee] ]]; then
   PGPASSWORD=${POSTGRES_PASS} pg_dumpall ${PG_CONN_PARAMETERS}  --globals-only -f ${MYBASEDIR}/globals.sql
 elif [[ ${STORAGE_BACKEND} == "S3" ]]; then
-  PGPASSWORD=${POSTGRES_PASS} pg_dumpall ${PG_CONN_PARAMETERS}  --globals-only | s3cmd put - s3://${BUCKET}/globals.sql
+  PGPASSWORD=${POSTGRES_PASS} pg_dumpall ${PG_CONN_PARAMETERS}  --globals-only | s3cmd put - -f s3://${BUCKET}/globals.sql
   echo "Sync globals.sql to ${BUCKET} bucket  " >>/var/log/cron.log
 fi
 
@@ -52,7 +52,7 @@ for DB in ${DBLIST}; do
     if [ -z "${DB_TABLES:-}" ]; then
       echo "Backing up $FILENAME to s3://${BUCKET}/" >>/var/log/cron.log
       PGPASSWORD=${POSTGRES_PASS} pg_dump ${PG_CONN_PARAMETERS} ${DUMP_ARGS} -d ${DB} > ${FILENAME}
-      gzip $FILENAME
+      gzip -f $FILENAME
       s3cmd sync -r ${MYBASEDIR}/* s3://${BUCKET}/
       echo "Backing up $FILENAME done" >>/var/log/cron.log
       rm ${MYBACKUPDIR}/*
@@ -73,6 +73,6 @@ if [ "${REMOVE_BEFORE:-}" ]; then
     find ${MYBASEDIR}/* -type f -mmin +${TIME_MINUTES} -delete &>>/var/log/cron.log
   elif [[ ${STORAGE_BACKEND} == "S3" ]]; then
     # Credits https://shout.setfive.com/2011/12/05/deleting-files-older-than-specified-time-with-s3cmd-and-bash/
-    clean_s3bucket "${BUCKET}" "${REMOVE_BEFORE} days"
+    echo clean_s3bucket "${BUCKET}" "${REMOVE_BEFORE} days"
   fi
 fi

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source /root/.env
 source /backup-scripts/env-data.sh
 
 #echo "Running with these environment options" >> /var/log/cron.log

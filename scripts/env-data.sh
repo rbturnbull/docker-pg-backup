@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o allexport
+
 DEFAULT_EXTRA_CONF_DIR="/settings"
 
 if [ -z "${EXTRA_CONF_DIR}" ]; then
@@ -42,7 +44,7 @@ else
     HOST_BUCKET=$(eval echo $HOST_BUCKET)
 fi
 if [ -z "${SSL_SECURE}" ]; then
-    SSL_SECURE=True
+    SSL_SECURE='YES'
 else
     SSL_SECURE=$(eval echo $SSL_SECURE)
 fi
